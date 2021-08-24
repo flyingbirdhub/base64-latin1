@@ -1,7 +1,5 @@
 import Worker from 'web-worker:./worker.ts';
 
-const worker = new Worker();
-
 export async function decoder(data: string) {
   return await exec({
     type: 'decode',
@@ -18,6 +16,7 @@ export async function encoder(data: string) {
 
 function exec(data) {
   const promise = new Promise<string>((resolve, reject) => {
+    const worker = new Worker();
     worker.onmessage = (e) => {
       if(e.data.code !== 0) {
         reject(e.data.message);
